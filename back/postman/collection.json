@@ -1,0 +1,322 @@
+{
+  "info": {
+    "name": "Palha Italiana API",
+    "description": "Coleção de endpoints da API de Fidelidade da Palha Italiana",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "variable": [
+    {
+      "key": "baseUrl",
+      "value": "http://localhost:3000",
+      "type": "string"
+    },
+    {
+      "key": "token",
+      "value": "",
+      "type": "string"
+    }
+  ],
+  "item": [
+    {
+      "name": "Auth",
+      "item": [
+        {
+          "name": "Register",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@example.com\",\n  \"password\": \"senha123\",\n  \"nome\": \"João Silva\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/register",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "register"]
+            }
+          }
+        },
+        {
+          "name": "Login",
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "if (pm.response.code === 200) {",
+                  "    var jsonData = pm.response.json();",
+                  "    pm.collectionVariables.set('token', jsonData.data.session.access_token);",
+                  "}"
+                ]
+              }
+            }
+          ],
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"email\": \"cliente@example.com\",\n  \"password\": \"senha123\"\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "login"]
+            }
+          }
+        },
+        {
+          "name": "Me",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/me",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "me"]
+            }
+          }
+        },
+        {
+          "name": "Logout",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/auth/logout",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "auth", "logout"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Compras",
+      "item": [
+        {
+          "name": "Criar Compra",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
+              },
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"quantidade\": 5,\n  \"valor_total\": 50.00\n}"
+            },
+            "url": {
+              "raw": "{{baseUrl}}/api/compras",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "compras"]
+            }
+          }
+        },
+        {
+          "name": "Listar Compras",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/compras",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "compras"]
+            }
+          }
+        },
+        {
+          "name": "Listar Compras Pendentes",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/compras?status=pendente",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "compras"],
+              "query": [
+                {
+                  "key": "status",
+                  "value": "pendente"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Buscar Compra",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/compras/:id",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "compras", ":id"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "uuid-da-compra"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Confirmar Compra (Vendedor)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/compras/:id/confirmar",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "compras", ":id", "confirmar"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "uuid-da-compra"
+                }
+              ]
+            }
+          }
+        },
+        {
+          "name": "Rejeitar Compra (Vendedor)",
+          "request": {
+            "method": "PATCH",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/compras/:id/rejeitar",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "compras", ":id", "rejeitar"],
+              "variable": [
+                {
+                  "key": "id",
+                  "value": "uuid-da-compra"
+                }
+              ]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Pontos",
+      "item": [
+        {
+          "name": "Buscar Pontos",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pontos",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pontos"]
+            }
+          }
+        },
+        {
+          "name": "Buscar Estatísticas",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pontos/estatisticas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pontos", "estatisticas"]
+            }
+          }
+        },
+        {
+          "name": "Resumo de Vendas (Vendedor)",
+          "request": {
+            "method": "GET",
+            "header": [
+              {
+                "key": "Authorization",
+                "value": "Bearer {{token}}"
+              }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/api/pontos/resumo-vendas",
+              "host": ["{{baseUrl}}"],
+              "path": ["api", "pontos", "resumo-vendas"]
+            }
+          }
+        }
+      ]
+    },
+    {
+      "name": "Health Check",
+      "request": {
+        "method": "GET",
+        "url": {
+          "raw": "{{baseUrl}}/api/health",
+          "host": ["{{baseUrl}}"],
+          "path": ["api", "health"]
+        }
+      }
+    }
+  ]
+}
+
