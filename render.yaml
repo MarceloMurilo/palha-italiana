@@ -1,0 +1,56 @@
+# ========================================
+# 🚀 Configuração Render - Backend
+# ========================================
+
+services:
+  - type: web
+    name: palha-italiana-backend
+    runtime: node
+    region: oregon
+    plan: free
+    
+    # Repositório
+    repo: https://github.com/MarceloMurilo/palha-italiana
+    branch: main
+    
+    # Diretório raiz do backend
+    rootDir: back
+    
+    # Comandos
+    buildCommand: npm install
+    startCommand: node src/index.js
+    
+    # Variáveis de ambiente
+    envVars:
+      - key: PORT
+        value: 3000
+      
+      - key: SUPABASE_URL
+        sync: false  # Adicionar manualmente no dashboard
+      
+      - key: SUPABASE_ANON_KEY
+        sync: false  # Adicionar manualmente no dashboard
+      
+      - key: SUPABASE_SERVICE_ROLE_KEY
+        sync: false  # Adicionar manualmente no dashboard
+    
+    # Health check
+    healthCheckPath: /api/health
+    
+    # Auto-deploy
+    autoDeploy: true
+
+# ========================================
+# 📝 INSTRUÇÕES:
+# ========================================
+# 
+# 1. Copie este arquivo para a raiz do projeto
+# 2. No Render Dashboard, conecte ao GitHub
+# 3. Adicione as variáveis de ambiente manualmente:
+#    - SUPABASE_URL
+#    - SUPABASE_ANON_KEY
+#    - SUPABASE_SERVICE_ROLE_KEY
+# 4. Deploy!
+#
+# ========================================
+
