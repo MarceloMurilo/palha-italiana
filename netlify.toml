@@ -1,0 +1,61 @@
+# ========================================
+# 🌐 Configuração Netlify - Palha Italiana
+# ========================================
+
+[build]
+  # Diretório base (onde está o frontend)
+  base = "front"
+  
+  # Comando de build
+  command = "npm run build"
+  
+  # Diretório de publicação (output do build)
+  publish = "front/dist"
+
+[build.environment]
+  # Versão do Node.js
+  NODE_VERSION = "18"
+  
+  # Permitir chaves públicas no bundle (SUPABASE_ANON_KEY é PÚBLICA!)
+  SECRETS_SCAN_OMIT_KEYS = "VITE_SUPABASE_ANON_KEY,VITE_SUPABASE_URL,VITE_API_URL"
+
+# ========================================
+# 🔄 REDIRECTS (para React Router funcionar)
+# ========================================
+
+[[redirects]]
+  from = "/*"
+  to = "/index.html"
+  status = 200
+
+# ========================================
+# 🔒 HEADERS DE SEGURANÇA
+# ========================================
+
+[[headers]]
+  for = "/*"
+  [headers.values]
+    X-Frame-Options = "DENY"
+    X-Content-Type-Options = "nosniff"
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    Permissions-Policy = "geolocation=(), microphone=(), camera=()"
+
+# ========================================
+# ⚡ CACHE (para melhor performance)
+# ========================================
+
+[[headers]]
+  for = "/assets/*"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.js"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
+[[headers]]
+  for = "/*.css"
+  [headers.values]
+    Cache-Control = "public, max-age=31536000, immutable"
+
