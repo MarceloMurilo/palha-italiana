@@ -9,8 +9,8 @@
   # Comando de build
   command = "npm run build"
   
-  # Diretório de publicação (output do build)
-  publish = "front/dist"
+  # Diretório de publicação (output do build - relativo ao base)
+  publish = "dist"
 
 [build.environment]
   # Versão do Node.js
