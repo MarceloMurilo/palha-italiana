@@ -151,9 +151,10 @@ export default function Pontos() {
       <div className="max-w-2xl mx-auto mt-8">
         <button
           onClick={() => navigate('/comprar')}
-          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded-xl text-lg transition-colors"
+          className="w-full bg-orange-500 hover:bg-orange-600 text-white font-bold py-4 px-6 rounded-xl text-lg transition-colors flex items-center justify-center gap-2"
         >
-          🍫 Comprar mais palhas
+          <ShoppingCart className="w-6 h-6" />
+          Comprar mais e ganhar pontos!
         </button>
       </div>
     </div>

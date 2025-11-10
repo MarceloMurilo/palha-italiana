@@ -160,7 +160,7 @@ export default function Comprar() {
           <>
             {/* Título */}
             <h2 className="text-2xl font-bold text-center text-gray-800 mb-8">
-              Selecione quantas palhas você comprou
+              Quantas palhas você levou hoje?
             </h2>
 
             {/* Aviso de Palhas Disponíveis */}
