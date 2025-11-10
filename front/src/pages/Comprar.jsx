@@ -16,6 +16,10 @@ export default function Comprar() {
   const navigate = useNavigate();
   const { logout, user } = useAuth();
 
+  // Pegar o nome do usuário (ou primeiro nome do email)
+  const userName = user?.user_metadata?.nome || user?.email?.split('@')[0] || 'Cliente';
+  const firstName = userName.split(' ')[0];
+
   const CHAVE_PIX = '98982832657';
   const MAX_PALHAS = 5;
 
@@ -128,10 +132,10 @@ export default function Comprar() {
       {/* Header */}
       <div className="max-w-2xl mx-auto mb-8 flex justify-between items-center">
         <div>
-          <h1 className="text-2xl font-bold text-gray-800 flex items-center gap-2">
-            🍫 Palha Italiana
+          <h1 className="text-2xl font-bold text-gray-800">
+            Olá, {firstName}! 🍫
           </h1>
-          <p className="text-sm text-gray-600">Olá, {user?.email}</p>
+          <p className="text-sm text-gray-600">Bem-vindo à Palha Italiana — é ótimo te ver por aqui!</p>
         </div>
         <div className="flex gap-2">
           <button

@@ -1,7 +1,8 @@
 import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Gift, ArrowLeft } from 'lucide-react';
+import { Gift, ArrowLeft, ShoppingCart } from 'lucide-react';
 import { api } from '../config/api';
+import { useAuth } from '../context/AuthContext';
 
 export default function Pontos() {
   const [pontos, setPontos] = useState(null);
@@ -9,6 +10,11 @@ export default function Pontos() {
   const [loading, setLoading] = useState(true);
   
   const navigate = useNavigate();
+  const { user } = useAuth();
+
+  // Pegar o nome do usuário
+  const userName = user?.user_metadata?.nome || user?.email?.split('@')[0] || 'Cliente';
+  const firstName = userName.split(' ')[0];
 
   useEffect(() => {
     carregarDados();
@@ -57,10 +63,12 @@ export default function Pontos() {
           Voltar
         </button>
         
-        <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-          <Gift className="w-8 h-8 text-orange-500" />
-          Meus Pontos
+        <h1 className="text-3xl font-bold text-gray-800">
+          Seus Pontos, {firstName}! 🎁
         </h1>
+        <p className="text-sm text-gray-600 mt-1">
+          Aqui está todo seu progresso na Palha Italiana
+        </p>
       </div>
 
       {/* Aviso de Brindes Disponíveis */}
@@ -70,10 +78,10 @@ export default function Pontos() {
             <div className="text-center">
               <Gift className="w-12 h-12 mx-auto mb-3" />
               <p className="text-2xl font-bold mb-1">
-                🎉 Você tem {brindesDisponiveis} {brindesDisponiveis === 1 ? 'brinde disponível' : 'brindes disponíveis'}!
+                🎉 Parabéns! Você tem {brindesDisponiveis} {brindesDisponiveis === 1 ? 'palha grátis' : 'palhas grátis'} esperando!
               </p>
               <p className="text-sm opacity-90">
-                Procure o vendedor para resgatar sua palha grátis 🍫
+                É só procurar a gente para resgatar seu brinde 🍫
               </p>
             </div>
           </div>
