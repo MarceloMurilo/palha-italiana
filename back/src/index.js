@@ -12,12 +12,31 @@ dotenv.config();
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Configuração de CORS simplificada
+// Configuração de CORS para produção
+const allowedOrigins = [
+  'http://localhost:5173',
+  'http://localhost:3000',
+  'https://palhaitalianaa.netlify.app',
+  'https://palha-italiana-backend.onrender.com'
+];
+
 const corsOptions = {
-  origin: true, // Aceita todas as origens em desenvolvimento
+  origin: function (origin, callback) {
+    // Permitir requisições sem origin (mobile apps, Postman, etc)
+    if (!origin) return callback(null, true);
+    
+    if (allowedOrigins.indexOf(origin) !== -1) {
+      callback(null, true);
+    } else {
+      console.log('❌ Origin bloqueada:', origin);
+      callback(null, true); // Permitir temporariamente para debug
+    }
+  },
   credentials: true,
   methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-  allowedHeaders: ['Content-Type', 'Authorization']
+  allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
+  exposedHeaders: ['Content-Length', 'X-Request-Id'],
+  maxAge: 86400 // 24 hours
 };
 
 // Middlewares globais
