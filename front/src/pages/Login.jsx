@@ -36,24 +36,22 @@ export default function Login() {
           setSuccess('');
         }, 5000);
       } else {
-        await login(email, password);
+        const response = await login(email, password);
         
-        // Verificar se é vendedor para redirecionar corretamente
-        try {
-          const vendedorResponse = await fetch('http://localhost:3000/api/compras', {
-            headers: {
-              'Authorization': `Bearer ${localStorage.getItem('access_token')}`
-            }
-          });
-          const vendedorData = await vendedorResponse.json();
-          
-          if (vendedorData.is_vendedor) {
-            navigate('/vendedor');
-          } else {
-            navigate('/comprar');
-          }
-        } catch (err) {
-          // Se der erro ao verificar, vai para comprar mesmo
+        // Verificar se é vendedor pelos metadados do usuário
+        const isVendedor = response?.data?.user?.user_metadata?.is_vendedor === true;
+        
+        console.log('🔍 Verificando vendedor:', {
+          user: response?.data?.user,
+          isVendedor,
+          metadata: response?.data?.user?.user_metadata
+        });
+        
+        if (isVendedor) {
+          console.log('✅ Redirecionando para /vendedor');
+          navigate('/vendedor');
+        } else {
+          console.log('✅ Redirecionando para /comprar');
           navigate('/comprar');
         }
       }
