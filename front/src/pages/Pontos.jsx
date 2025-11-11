@@ -16,6 +16,14 @@ export default function Pontos() {
   const userName = user?.user_metadata?.nome || user?.email?.split('@')[0] || 'Cliente';
   const firstName = userName.split(' ')[0];
 
+  // Proteger rota: se for vendedor, redireciona para /vendedor
+  useEffect(() => {
+    if (user?.user_metadata?.is_vendedor === true) {
+      console.log('🚫 Vendedor tentando acessar /pontos - redirecionando para /vendedor');
+      navigate('/vendedor');
+    }
+  }, [user, navigate]);
+
   useEffect(() => {
     carregarDados();
   }, []);

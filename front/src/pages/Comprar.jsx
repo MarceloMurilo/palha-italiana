@@ -29,6 +29,14 @@ export default function Comprar() {
   const bonus = Math.floor(quantidade / 5);
   const palhasDisponiveisCount = palhasBloqueadas.filter(b => !b).length;
 
+  // Proteger rota: se for vendedor, redireciona para /vendedor
+  useEffect(() => {
+    if (user?.user_metadata?.is_vendedor === true) {
+      console.log('🚫 Vendedor tentando acessar /comprar - redirecionando para /vendedor');
+      navigate('/vendedor');
+    }
+  }, [user, navigate]);
+
   // Carregar palhas bloqueadas ao montar o componente
   useEffect(() => {
     carregarPalhasBloqueadas();

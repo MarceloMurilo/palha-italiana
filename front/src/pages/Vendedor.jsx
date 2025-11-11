@@ -13,7 +13,15 @@ export default function Vendedor() {
   const [showBrindes, setShowBrindes] = useState(false);
   
   const navigate = useNavigate();
-  const { logout } = useAuth();
+  const { logout, user } = useAuth();
+
+  // Proteger rota: se NÃO for vendedor, redireciona para /comprar
+  useEffect(() => {
+    if (user && user.user_metadata?.is_vendedor !== true) {
+      console.log('🚫 Cliente tentando acessar /vendedor - redirecionando para /comprar');
+      navigate('/comprar');
+    }
+  }, [user, navigate]);
 
   useEffect(() => {
     carregarCompras();
